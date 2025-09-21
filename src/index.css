@@ -1,17 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Modern Fort Wayne 311 Design System */
+/* Fort Wayne 311 - Award-Winning Design System */
 
 @layer base {
   :root {
-    /* Brand Colors - Fort Wayne Navy & Blues */
+    /* Enhanced Brand Colors */
     --primary: 218 70% 25%;        /* Deep navy from city logo */
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 218 70% 20%;   /* Darker on hover */
+    --primary-hover: 218 70% 20%;
     
     /* Action & Interactive Colors */
     --secondary: 214 84% 56%;       /* Bright accessible blue */
@@ -23,13 +23,15 @@
     --accent-foreground: 218 70% 25%;
     --accent-hover: 43 96% 51%;
     
-    /* Status Colors */
+    /* Enhanced Status Colors */
     --success: 142 69% 58%;         /* Green for resolved */
     --success-foreground: 0 0% 100%;
     --warning: 43 96% 56%;          /* Amber for pending */
     --warning-foreground: 218 70% 25%;
     --danger: 0 84% 60%;            /* Red for urgent */
     --danger-foreground: 0 0% 100%;
+    --info: 214 84% 56%;            /* Blue for information */
+    --info-foreground: 0 0% 100%;
     
     /* Neutral Colors */
     --background: 0 0% 100%;
@@ -39,7 +41,7 @@
     --card-foreground: 218 70% 25%;
     --card-border: 220 13% 91%;
     
-    --muted: 220 14% 96%;           /* Light gray backgrounds */
+    --muted: 220 14% 96%;
     --muted-foreground: 215 16% 47%;
     
     --border: 220 13% 91%;
@@ -52,29 +54,74 @@
     --civic-gold: 43 96% 56%;
     --civic-gray: 220 14% 96%;
     
-    /* Spacing & Layout */
+    /* Enhanced Spacing & Layout */
     --radius: 0.75rem;
+    --radius-sm: 0.5rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
     --sidebar-width: 280px;
     
-    /* Shadows for depth */
+    /* Enhanced Shadows */
     --shadow-subtle: 0 1px 3px 0 hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
     --shadow-card: 0 4px 6px -1px hsl(0 0% 0% / 0.1), 0 2px 4px -2px hsl(0 0% 0% / 0.1);
     --shadow-elevated: 0 10px 15px -3px hsl(0 0% 0% / 0.1), 0 4px 6px -4px hsl(0 0% 0% / 0.1);
+    --shadow-floating: 0 20px 25px -5px hsl(0 0% 0% / 0.1), 0 10px 10px -5px hsl(0 0% 0% / 0.04);
+
+    /* Typography Scale */
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.25rem;
+    --font-size-5xl: 3rem;
+
+    /* Line Heights */
+    --line-height-tight: 1.25;
+    --line-height-snug: 1.375;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.625;
+    --line-height-loose: 2;
+
+    /* Spacing Scale */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-20: 5rem;
+    --space-24: 6rem;
+
+    /* Animation Durations */
+    --duration-75: 75ms;
+    --duration-100: 100ms;
+    --duration-150: 150ms;
+    --duration-200: 200ms;
+    --duration-300: 300ms;
+    --duration-500: 500ms;
+    --duration-700: 700ms;
+    --duration-1000: 1000ms;
+
+    /* Easing Functions */
+    --ease-linear: linear;
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -137,7 +184,7 @@
 }
 
 @layer components {
-  /* Status Badge Components */
+  /* Enhanced Status Badge Components */
   .status-resolved {
     @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
     background-color: hsl(var(--success));
@@ -155,8 +202,14 @@
     background-color: hsl(var(--danger));
     color: hsl(var(--danger-foreground));
   }
+
+  .status-in-progress {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+    background-color: hsl(var(--info));
+    color: hsl(var(--info-foreground));
+  }
   
-  /* Card Components */
+  /* Enhanced Card Components */
   .civic-card {
     @apply bg-card border border-card-border rounded-lg p-6 transition-all duration-200;
     box-shadow: var(--shadow-card);
@@ -166,31 +219,196 @@
     transform: translateY(-2px);
     box-shadow: var(--shadow-elevated);
   }
+
+  .civic-card-floating {
+    @apply bg-card border border-card-border rounded-xl p-8 transition-all duration-300;
+    box-shadow: var(--shadow-floating);
+  }
+
+  .civic-card-floating:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-floating);
+  }
   
   /* Service Request Cards */
   .service-card {
-    @apply civic-card cursor-pointer relative overflow-hidden;
+    @apply civic-card cursor-pointer relative overflow-hidden group;
   }
   
   .service-card:hover {
     @apply border-secondary;
+    transform: translateY(-2px);
   }
   
   .service-card::after {
     content: '';
     @apply absolute inset-0 bg-gradient-to-br from-secondary/5 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300;
   }
+
+  /* Quick Action Cards */
+  .quick-action-card {
+    @apply bg-white border border-gray-200 rounded-xl p-6 cursor-pointer transition-all duration-200 hover:shadow-lg hover:border-blue-300 group;
+  }
+
+  .quick-action-card:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Stepper Components */
+  .stepper-container {
+    @apply flex items-center justify-between mb-8;
+  }
+
+  .stepper-step {
+    @apply flex items-center;
+  }
+
+  .stepper-step.active .stepper-indicator {
+    @apply bg-blue-600 text-white;
+  }
+
+  .stepper-step.completed .stepper-indicator {
+    @apply bg-green-600 text-white;
+  }
+
+  .stepper-indicator {
+    @apply w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center text-sm font-medium transition-all duration-200;
+  }
+
+  .stepper-line {
+    @apply flex-1 h-0.5 bg-gray-200 mx-4;
+  }
+
+  .stepper-line.completed {
+    @apply bg-green-600;
+  }
   
-  /* Button Enhancements */
+  /* Enhanced Button Components */
   .btn-civic-primary {
-    @apply bg-secondary hover:bg-secondary-hover text-secondary-foreground;
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md;
   }
   
   .btn-civic-secondary {
-    @apply bg-transparent border-2 border-secondary text-secondary hover:bg-secondary hover:text-secondary-foreground;
+    @apply bg-transparent border-2 border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white font-medium px-6 py-3 rounded-lg transition-all duration-200;
   }
   
   .btn-civic-accent {
-    @apply bg-accent hover:bg-accent-hover text-accent-foreground;
+    @apply bg-amber-500 hover:bg-amber-600 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+
+  .btn-civic-success {
+    @apply bg-green-600 hover:bg-green-700 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+
+  .btn-civic-danger {
+    @apply bg-red-600 hover:bg-red-700 text-white font-medium px-6 py-3 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+
+  /* Search Components */
+  .search-container {
+    @apply relative w-full max-w-2xl mx-auto;
+  }
+
+  .search-input {
+    @apply w-full pl-12 pr-16 py-4 text-lg bg-white border border-gray-300 rounded-xl shadow-sm focus:shadow-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200;
+  }
+
+  .search-icon {
+    @apply absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400;
+  }
+
+  .search-voice {
+    @apply absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-blue-600 cursor-pointer transition-colors duration-200;
+  }
+
+  /* Navigation Components */
+  .nav-tab {
+    @apply flex items-center justify-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200;
+  }
+
+  .nav-tab.active {
+    @apply bg-blue-600 text-white shadow-sm;
+  }
+
+  .nav-tab.inactive {
+    @apply text-gray-600 hover:text-gray-900 hover:bg-gray-100;
+  }
+
+  /* Toast Notifications */
+  .toast {
+    @apply fixed top-4 right-4 z-50 max-w-sm w-full bg-white border border-gray-200 rounded-lg shadow-lg p-4 transform transition-all duration-300;
+  }
+
+  .toast.success {
+    @apply border-green-200 bg-green-50;
+  }
+
+  .toast.error {
+    @apply border-red-200 bg-red-50;
+  }
+
+  .toast.info {
+    @apply border-blue-200 bg-blue-50;
+  }
+
+  .toast.warning {
+    @apply border-amber-200 bg-amber-50;
+  }
+
+  /* Progress Components */
+  .progress-bar {
+    @apply w-full bg-gray-200 rounded-full h-2 overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full bg-blue-600 transition-all duration-500 ease-out;
+  }
+
+  /* Loading States */
+  .skeleton {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+
+  .skeleton-text {
+    @apply skeleton h-4 w-full;
+  }
+
+  .skeleton-title {
+    @apply skeleton h-6 w-3/4;
+  }
+
+  .skeleton-avatar {
+    @apply skeleton w-12 h-12 rounded-full;
+  }
+
+  /* Accessibility Enhancements */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  }
+
+  .focus-visible {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+
+  /* High Contrast Mode */
+  .high-contrast {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --border: 0 0% 0%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 0%;
+    --secondary-foreground: 0 0% 100%;
+  }
+
+  /* Large Text Mode */
+  .large-text {
+    --font-size-base: 1.125rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 1.875rem;
+    --font-size-3xl: 2.25rem;
+    --font-size-4xl: 3rem;
+    --font-size-5xl: 3.75rem;
   }
 }

@@ -67,7 +67,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
       if (Notification.permission === 'granted') {
         new Notification(toast.title, {
           body: toast.message,
-          icon: '/favicon.ico',
+          icon: '/cityLogo.png',
           tag: id
         });
       } else if (Notification.permission !== 'denied') {
@@ -75,7 +75,7 @@ export function ToastProvider({ children }: ToastProviderProps) {
           if (permission === 'granted') {
             new Notification(toast.title, {
               body: toast.message,
-              icon: '/favicon.ico',
+              icon: '/cityLogo.png',
               tag: id
             });
           }

@@ -196,7 +196,7 @@ export default function SmartSearch({
           onChange={(e) => handleInputChange(e.target.value)}
           onKeyDown={handleKeyDown}
           onFocus={() => query.length > 0 && setShowSuggestions(true)}
-          className="search-input"
+          className="search-input pl-14 pr-20 py-4"
         />
         
         <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">

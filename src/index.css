@@ -310,7 +310,7 @@
   }
 
   .search-input {
-    @apply w-full pl-12 pr-16 py-4 text-lg bg-white border border-gray-300 rounded-xl shadow-sm focus:shadow-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200;
+    @apply w-full pl-14 pr-20 py-4 text-lg bg-white border border-gray-300 rounded-xl shadow-sm focus:shadow-md focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200;
   }
 
   .search-icon {

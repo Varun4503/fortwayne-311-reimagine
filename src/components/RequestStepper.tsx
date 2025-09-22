@@ -88,16 +88,6 @@ export default function RequestStepper({
 
   const steps: StepperStep[] = [
     {
-      id: 'location',
-      title: 'Location',
-      description: 'Where is the issue?',
-      icon: <MapPin className="h-5 w-5" />,
-      component: <LocationStep 
-        data={requestData.location} 
-        onChange={(location) => setRequestData(prev => ({ ...prev, location }))} 
-      />
-    },
-    {
       id: 'service',
       title: 'Service Type',
       description: 'What needs to be fixed?',
@@ -105,6 +95,16 @@ export default function RequestStepper({
       component: <ServiceStep 
         data={requestData.service} 
         onChange={(service) => setRequestData(prev => ({ ...prev, service }))} 
+      />
+    },
+    {
+      id: 'location',
+      title: 'Location',
+      description: 'Where is the issue?',
+      icon: <MapPin className="h-5 w-5" />,
+      component: <LocationStep 
+        data={requestData.location} 
+        onChange={(location) => setRequestData(prev => ({ ...prev, location }))} 
       />
     },
     {
@@ -145,9 +145,9 @@ export default function RequestStepper({
   const isStepValid = (stepIndex: number): boolean => {
     switch (stepIndex) {
       case 0:
-        return requestData.location.address.length > 0;
-      case 1:
         return requestData.service.type.length > 0;
+      case 1:
+        return requestData.location.address.length > 0;
       case 2:
         return requestData.details.description.length > 0;
       case 3:

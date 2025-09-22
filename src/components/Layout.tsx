@@ -57,8 +57,12 @@ export default function Layout({ children }: LayoutProps) {
       <div className="lg:hidden sticky top-0 z-50 bg-white border-b border-gray-200">
         <div className="flex items-center justify-between px-4 py-3">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <Building2 className="h-5 w-5 text-white" />
+            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-sm">
+              <img 
+                src="/cityLogo.png" 
+                alt="City of Fort Wayne Logo" 
+                className="w-6 h-6 object-contain"
+              />
             </div>
             <div>
               <div className="font-semibold text-sm">Fort Wayne 311</div>
@@ -84,8 +88,12 @@ export default function Layout({ children }: LayoutProps) {
         )}>
           {/* Logo Section */}
           <div className="flex items-center px-4 py-4 border-b border-gray-200">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center mr-3">
-              <Building2 className="h-5 w-5 text-white" />
+            <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center mr-3 shadow-sm">
+              <img 
+                src="/cityLogo.png" 
+                alt="City of Fort Wayne Logo" 
+                className="w-6 h-6 object-contain"
+              />
             </div>
             <div>
               <div className="font-semibold text-sm">Fort Wayne 311</div>

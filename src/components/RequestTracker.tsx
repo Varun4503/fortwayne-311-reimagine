@@ -23,6 +23,8 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface RequestStatus {
   id: string;
@@ -149,6 +151,7 @@ export default function RequestTracker({
   showStats = true 
 }: RequestTrackerProps) {
   const [selectedRequest, setSelectedRequest] = useState<RequestStatus | null>(null);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [filter, setFilter] = useState<'all' | 'active' | 'resolved'>('all');
 
   const filteredRequests = requests.filter(request => {
@@ -297,231 +300,194 @@ export default function RequestTracker({
         </TabsList>
 
         <TabsContent value={filter} className="space-y-4">
-          {filteredRequests.map((request) => (
-            <Card 
-              key={request.id} 
-              className="cursor-pointer hover:shadow-md transition-shadow"
-              onClick={() => {
-                setSelectedRequest(request);
-                onRequestSelect?.(request);
-              }}
-            >
-              <CardContent className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="font-semibold text-lg">{request.title}</h3>
-                      <Badge className={getStatusColor(request.status)}>
-                        {getStatusIcon(request.status)}
-                        <span className="ml-1 capitalize">{request.status.replace('-', ' ')}</span>
-                      </Badge>
-                      <Badge className={getPriorityColor(request.priority)}>
-                        {request.priority} priority
-                      </Badge>
-                    </div>
-                    
-                    <p className="text-gray-600 mb-2">{request.description}</p>
-                    
-                    <div className="flex items-center space-x-4 text-sm text-gray-500">
-                      <div className="flex items-center space-x-1">
-                        <MapPin className="h-4 w-4" />
-                        <span>{request.location}</span>
+          <Card>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Title</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Priority</TableHead>
+                    <TableHead>Location</TableHead>
+                    <TableHead>Submitted</TableHead>
+                    <TableHead>Tracking #</TableHead>
+                    <TableHead className="text-right">Action</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredRequests.map((request) => (
+                    <TableRow 
+                      key={request.id}
+                    >
+                      <TableCell className="font-medium">{request.title}</TableCell>
+                      <TableCell>
+                        <Badge className={getStatusColor(request.status)}>
+                          {getStatusIcon(request.status)}
+                          <span className="ml-1 capitalize">{request.status.replace('-', ' ')}</span>
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge className={getPriorityColor(request.priority)}>
+                          {request.priority}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="truncate max-w-xs">{request.location}</TableCell>
+                      <TableCell>Submitted {getTimeAgo(request.submittedDate)}</TableCell>
+                      <TableCell>{request.trackingNumber}</TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedRequest(request);
+                            setDetailsOpen(true);
+                            onRequestSelect?.(request);
+                          }}
+                        >
+                          Open
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+      {/* Request Details Dialog */}
+      <Dialog open={detailsOpen && !!selectedRequest} onOpenChange={(o) => {
+        setDetailsOpen(o);
+        if (!o) setSelectedRequest(null);
+      }}>
+        <DialogContent className="sm:max-w-2xl">
+          {selectedRequest && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center space-x-3">
+                  <span>{selectedRequest.title}</span>
+                  <Badge className={getStatusColor(selectedRequest.status)}>
+                    {getStatusIcon(selectedRequest.status)}
+                    <span className="ml-1 capitalize">{selectedRequest.status.replace('-', ' ')}</span>
+                  </Badge>
+                </DialogTitle>
+              </DialogHeader>
+              <div className="space-y-6">
+                {/* Request Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-2">Request Details</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Tracking Number:</span>
+                        <span className="font-medium">{selectedRequest.trackingNumber}</span>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>Submitted {getTimeAgo(request.submittedDate)}</span>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Category:</span>
+                        <span className="font-medium">{selectedRequest.category}</span>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <FileText className="h-4 w-4" />
-                        <span>{request.trackingNumber}</span>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Department:</span>
+                        <span className="font-medium">{selectedRequest.department}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Priority:</span>
+                        <Badge className={getPriorityColor(selectedRequest.priority)}>
+                          {selectedRequest.priority}
+                        </Badge>
                       </div>
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-2">
-                    {request.photos.length > 0 && (
-                      <div className="flex items-center space-x-1 text-sm text-gray-500">
-                        <Camera className="h-4 w-4" />
-                        <span>{request.photos.length}</span>
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-2">Assignment</h4>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Assigned To:</span>
+                        <span className="font-medium">{selectedRequest.assignedTo || 'Not assigned'}</span>
                       </div>
-                    )}
-                    <Button variant="ghost" size="sm">
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Progress Bar */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-600">Progress</span>
-                    <span className="font-medium">{calculateProgress(request)}%</span>
-                  </div>
-                  <Progress value={calculateProgress(request)} className="h-2" />
-                </div>
-
-                {/* Latest Update */}
-                {request.updates.length > 0 && (
-                  <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-start space-x-3">
-                      <div className="flex-shrink-0">
-                        {getStatusIcon(request.updates[request.updates.length - 1].status)}
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Submitted:</span>
+                        <span className="font-medium">{formatDate(selectedRequest.submittedDate)}</span>
                       </div>
-                      <div className="flex-1">
-                        <p className="text-sm text-gray-900">
-                          {request.updates[request.updates.length - 1].message}
-                        </p>
-                        <div className="flex items-center space-x-2 mt-1">
-                          <span className="text-xs text-gray-500">
-                            {request.updates[request.updates.length - 1].author}
-                          </span>
-                          <span className="text-xs text-gray-400">•</span>
-                          <span className="text-xs text-gray-500">
-                            {getTimeAgo(request.updates[request.updates.length - 1].timestamp)}
-                          </span>
-                        </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Est. Resolution:</span>
+                        <span className="font-medium">{formatDate(selectedRequest.estimatedResolution)}</span>
                       </div>
                     </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
-      </Tabs>
+                </div>
 
-      {/* Request Details Modal/View */}
-      {selectedRequest && (
-        <Card className="mt-6">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle className="flex items-center space-x-3">
-                <span>{selectedRequest.title}</span>
-                <Badge className={getStatusColor(selectedRequest.status)}>
-                  {getStatusIcon(selectedRequest.status)}
-                  <span className="ml-1 capitalize">{selectedRequest.status.replace('-', ' ')}</span>
-                </Badge>
-              </CardTitle>
-              <Button variant="ghost" onClick={() => setSelectedRequest(null)}>
-                <XCircle className="h-4 w-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          
-          <CardContent>
-            <div className="space-y-6">
-              {/* Request Info */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Timeline */}
                 <div>
-                  <h4 className="font-medium text-gray-900 mb-2">Request Details</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Tracking Number:</span>
-                      <span className="font-medium">{selectedRequest.trackingNumber}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Category:</span>
-                      <span className="font-medium">{selectedRequest.category}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Department:</span>
-                      <span className="font-medium">{selectedRequest.department}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Priority:</span>
-                      <Badge className={getPriorityColor(selectedRequest.priority)}>
-                        {selectedRequest.priority}
-                      </Badge>
-                    </div>
-                  </div>
-                </div>
-                
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-2">Assignment</h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Assigned To:</span>
-                      <span className="font-medium">{selectedRequest.assignedTo || 'Not assigned'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Submitted:</span>
-                      <span className="font-medium">{formatDate(selectedRequest.submittedDate)}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Est. Resolution:</span>
-                      <span className="font-medium">{formatDate(selectedRequest.estimatedResolution)}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Timeline */}
-              <div>
-                <h4 className="font-medium text-gray-900 mb-4">Status Timeline</h4>
-                <div className="space-y-4">
-                  {selectedRequest.updates.map((update, index) => (
-                    <div key={update.id} className="flex items-start space-x-4">
-                      <div className="flex-shrink-0">
-                        <div className={cn(
-                          "w-8 h-8 rounded-full flex items-center justify-center",
-                          index === selectedRequest.updates.length - 1 
-                            ? "bg-blue-100 text-blue-600" 
-                            : "bg-gray-100 text-gray-600"
-                        )}>
-                          {getStatusIcon(update.status)}
-                        </div>
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-2 mb-1">
-                          <h5 className="font-medium text-sm">{update.status.replace('-', ' ')}</h5>
-                          <span className="text-xs text-gray-500">
-                            {getTimeAgo(update.timestamp)}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-600 mb-2">{update.message}</p>
-                        <div className="flex items-center space-x-2 text-xs text-gray-500">
-                          <User className="h-3 w-3" />
-                          <span>{update.author}</span>
-                          <span>•</span>
-                          <span>{update.authorRole}</span>
-                        </div>
-                        {update.photos && update.photos.length > 0 && (
-                          <div className="mt-2 flex space-x-2">
-                            {update.photos.map((photo, photoIndex) => (
-                              <img
-                                key={photoIndex}
-                                src={photo}
-                                alt={`Update ${index + 1} photo ${photoIndex + 1}`}
-                                className="w-16 h-16 object-cover rounded border"
-                              />
-                            ))}
+                  <h4 className="font-medium text-gray-900 mb-4">Status Timeline</h4>
+                  <div className="space-y-4">
+                    {selectedRequest.updates.map((update, index) => (
+                      <div key={update.id} className="flex items-start space-x-4">
+                        <div className="flex-shrink-0">
+                          <div className={cn(
+                            "w-8 h-8 rounded-full flex items-center justify-center",
+                            index === selectedRequest.updates.length - 1 
+                              ? "bg-blue-100 text-blue-600" 
+                              : "bg-gray-100 text-gray-600"
+                          )}>
+                            {getStatusIcon(update.status)}
                           </div>
-                        )}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h5 className="font-medium text-sm">{update.status.replace('-', ' ')}</h5>
+                            <span className="text-xs text-gray-500">
+                              {getTimeAgo(update.timestamp)}
+                            </span>
+                          </div>
+                          <p className="text-sm text-gray-600 mb-2">{update.message}</p>
+                          <div className="flex items-center space-x-2 text-xs text-gray-500">
+                            <User className="h-3 w-3" />
+                            <span>{update.author}</span>
+                            <span>•</span>
+                            <span>{update.authorRole}</span>
+                          </div>
+                          {update.photos && update.photos.length > 0 && (
+                            <div className="mt-2 flex space-x-2">
+                              {update.photos.map((photo, photoIndex) => (
+                                <img
+                                  key={photoIndex}
+                                  src={photo}
+                                  alt={`Update ${index + 1} photo ${photoIndex + 1}`}
+                                  className="w-16 h-16 object-cover rounded border"
+                                />
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center space-x-3 pt-4 border-t">
+                  <Button variant="outline" size="sm">
+                    <MessageSquare className="h-4 w-4 mr-2" />
+                    Add Comment
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <Phone className="h-4 w-4 mr-2" />
+                    Contact Department
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <RotateCcw className="h-4 w-4 mr-2" />
+                    Reopen Request
+                  </Button>
                 </div>
               </div>
-
-              {/* Actions */}
-              <div className="flex items-center space-x-3 pt-4 border-t">
-                <Button variant="outline" size="sm">
-                  <MessageSquare className="h-4 w-4 mr-2" />
-                  Add Comment
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Phone className="h-4 w-4 mr-2" />
-                  Contact Department
-                </Button>
-                <Button variant="outline" size="sm">
-                  <RotateCcw className="h-4 w-4 mr-2" />
-                  Reopen Request
-                </Button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

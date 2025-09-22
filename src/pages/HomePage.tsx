@@ -207,9 +207,11 @@ export default function HomePage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                    <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                      <Map className="h-5 w-5 text-white" />
-                    </div>
+                    <img 
+                      src="/cityLogo.png" 
+                      alt="City of Fort Wayne Logo" 
+                      className="w-8 h-8 object-contain"
+                    />
                   </div>
                   <div className="text-white">
                     <h1 className="text-xl font-bold">Welcome to City of Fort Wayne</h1>
@@ -451,18 +453,19 @@ export default function HomePage() {
               </div>
               
               <div>
-                <h3 className="text-base font-semibold text-gray-900 mb-2">Download the App</h3>
-                <div className="flex space-x-2">
-                  <Button size="sm" variant="outline" className="flex-1 text-xs">
-                    <Download className="h-3 w-3 mr-1" />
-                    iOS
-                  </Button>
-                  <Button size="sm" variant="outline" className="flex-1 text-xs">
-                    <Download className="h-3 w-3 mr-1" />
-                    Android
-                  </Button>
-                </div>
-              </div>
+                 <h3 className="text-base font-semibold text-gray-900 mb-2">Download the App</h3>
+                  <div className="flex flex-col space-y-2">
+                   <Button size="sm" variant="outline" className="text-xs">
+                      <Download className="h-2 w-1 mr-1" />
+                       iOS
+                   </Button>
+                   <Button size="sm" variant="outline" className="text-xs">
+                      <Download className="h-2 w-1 mr-1" />
+                      Android
+                   </Button>
+                 </div>
+            </div>
+
             </div>
           </div>
         </div>
